@@ -26,12 +26,15 @@ class DomainCl extends Thread{
             switch (operation(target)){
                 case "R":
                     Read(target);
+                    // yield
                     break;
                 case "W":
                     Write(target);
+                    // yield
                     break;
                 case "S":
                     Switch(target);
+                    // yield
                     break;
                 default:
                     System.out.println("Error");
@@ -76,6 +79,7 @@ class DomainCl extends Thread{
                 System.out.println(status + "F" + (target + 1) + " contains " +
                         message);
             }
+            // yield
             this.cList.lockFile[target].unlock();
             if (cList.readCount[target].getAndDecrement() == 0){
                 cList.objWriteSem[target].release();
