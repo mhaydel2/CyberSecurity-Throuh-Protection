@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Use {
@@ -22,4 +23,17 @@ public class Use {
         return randNum(0, 1) == 1;
     }
 
+    public static void cycle(){
+        Random rand = new Random();
+        try{
+            int time = rand.nextInt(7);
+            while (time < 3) time = rand.nextInt(7);
+            for (int i = 0; i<time; i++){
+                Thread.yield();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace(System.out);
+        }
+    }
 }
