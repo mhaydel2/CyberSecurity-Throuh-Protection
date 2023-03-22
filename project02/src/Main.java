@@ -41,6 +41,18 @@ public class Main {
         }
         if (args[1].equals("2")){
             System.out.println("----------------------------Access List----------------------------");
+            int domains = Use.randNum(3, 7);
+            int objects = Use.randNum(3, 7);
+
+            System.out.println("Object count: " + objects);
+            System.out.println("Domain count: " + domains);
+
+            ACL list = new ACL(domains, objects);
+
+            for(int i=0;i<domains+objects;i++){
+                ACLProgram ObjList = new ACLProgram(String.valueOf(i), list);
+                ObjList.start();
+            }
         }
         if (args[1].equals("3")) {
             System.out.println("----------------------------Capability List----------------------------");
