@@ -49,7 +49,7 @@ public class Main {
 
             ACL list = new ACL(domains, objects);
 
-            for(int i=0;i<domains+objects;i++){
+            for(int i=0;i<domains;i++){
                 ACLProgram ObjList = new ACLProgram(String.valueOf(i), list);
                 ObjList.start();
             }

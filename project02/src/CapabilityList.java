@@ -64,7 +64,7 @@ class DomainCl extends Thread{
         System.out.println(status + "Attempting to read resource: F"
                 + (target + 1));
         if (cList.checkPermit("R", domID - 1, target)){
-            if (cList.readCount[target].getAndIncrement() == 1){
+            if (cList.readCount[target].incrementAndGet() == 1){
                 cList.getSem(target);
             }
             this.cList.lockFile[target].lock();
@@ -81,7 +81,7 @@ class DomainCl extends Thread{
             }
             Use.cycle();
             this.cList.lockFile[target].unlock();
-            if (cList.readCount[target].getAndDecrement() == 0){
+            if (cList.readCount[target].decrementAndGet() == 0){
                 cList.objWriteSem[target].release();
             }
             System.out.print(status + "Operation complete\n");
