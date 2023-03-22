@@ -14,29 +14,29 @@ public class Main {
         System.out.println("Program arguments: " + Arrays.toString(args));
         if (args.length != 2) {
             System.out.println("Invalid input! (incorrect number of parameters; MUST have 2 parameters ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }
-        else if (!args[0].equals("-A")) {
+        else if (!args[0].equals("-S")) {
             System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-A\" ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }
         else if (!args[1].equals("1") && !args[1].equals("2") && !args[1].equals("3")) {
             System.out.println("Invalid input! (incorrect second parameter; second parameter MUST be either \"1\", \"2\", or \"3\" ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }
-        if (args[1].equals("2")){
+        if (args[1].equals("1")){
             System.out.println("----------------------------Access Matrix----------------------------");
         }
         if (args[1].equals("2")){
@@ -49,7 +49,7 @@ public class Main {
 
             ACL list = new ACL(domains, objects);
 
-            for(int i=0;i<domains+objects;i++){
+            for(int i=0;i<domains;i++){
                 ACLProgram ObjList = new ACLProgram(String.valueOf(i), list);
                 ObjList.start();
             }
