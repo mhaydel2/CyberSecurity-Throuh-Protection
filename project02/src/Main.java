@@ -14,17 +14,17 @@ public class Main {
         System.out.println("Program arguments: " + Arrays.toString(args));
         if (args.length != 2) {
             System.out.println("Invalid input! (incorrect number of parameters; MUST have 2 parameters ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }
-        else if (!args[0].equals("-A")) {
+        else if (!args[0].equals("-S")) {
             System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-A\" ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }
@@ -36,8 +36,22 @@ public class Main {
             System.out.println("Ending program...");
             return;
         }
-        if (args[1].equals("2")){
+        if (args[1].equals("1")){
             System.out.println("----------------------------Access Matrix----------------------------");
+            int domains = Use.randNum(3, 7);
+            int objects = Use.randNum(3, 7);
+
+            System.out.println("Domain count: " + domains);
+            System.out.println("Object count: " + objects);
+            AccessMatrix accessMatrix = new AccessMatrix(domains, objects);
+            accessMatrix.run();
+
+            for (int threadID = 0; threadID < domains; threadID++){
+                int domainID = threadID +1;
+                Arbitration threadObject = new Arbitration(threadID, accessMatrix.matrix, domainID);
+                threadObject.start();
+            }
+
         }
         if (args[1].equals("2")){
             System.out.println("----------------------------Access List----------------------------");
