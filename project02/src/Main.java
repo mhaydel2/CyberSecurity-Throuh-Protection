@@ -21,7 +21,7 @@ public class Main {
             return;
         }
         else if (!args[0].equals("-S")) {
-            System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-A\" ONLY!)");
+            System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-S\" ONLY!)");
             System.out.println("The ONLY valid arguments are as follows:  -S 1");
             System.out.println("                                          -S 2");
             System.out.println("                                          -S 3");
@@ -30,9 +30,9 @@ public class Main {
         }
         else if (!args[1].equals("1") && !args[1].equals("2") && !args[1].equals("3")) {
             System.out.println("Invalid input! (incorrect second parameter; second parameter MUST be either \"1\", \"2\", or \"3\" ONLY!)");
-            System.out.println("The ONLY valid arguments are as follows:  -A 1");
-            System.out.println("                                          -A 2");
-            System.out.println("                                          -A 3");
+            System.out.println("The ONLY valid arguments are as follows:  -S 1");
+            System.out.println("                                          -S 2");
+            System.out.println("                                          -S 3");
             System.out.println("Ending program...");
             return;
         }

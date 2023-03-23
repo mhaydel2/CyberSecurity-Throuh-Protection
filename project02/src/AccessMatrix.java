@@ -22,7 +22,6 @@ class Arbitration extends Thread{
     public void arbitration(int threadID, int randomColumnNum, String randColumn, int domainID){
         String operation;
         int objID;
-        int[] yieldTimesArray = {3, 4, 5, 6, 7 };
         String[] charBufferArray = new String[1];
         charBufferArray[0] = " ";
         String[] randWordArray = {"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"};
@@ -47,7 +46,7 @@ class Arbitration extends Thread{
                         } catch(Exception e){
                             System.out.println(e);
                         }
-                        int randYieldTime = yieldTimesArray[Use.randNum(0,4)]; // yields [3,7] times
+                        int randYieldTime = Use.randNum(3,7); // yields [3,7] times
                         System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
                         for(int i = 1; i <= randYieldTime; i++){
                             Thread.yield();
@@ -73,9 +72,9 @@ class Arbitration extends Thread{
                         }catch(Exception e){
                             System.out.println(e);
                         }
-                        int randomYieldTime = yieldTimesArray[Use.randNum(0,4)];
-                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                        for(int i = 1; i <= randomYieldTime; i++){
+                        int randYieldTime = Use.randNum(3,7);
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
+                        for(int i = 1; i <= randYieldTime; i++){
                             Thread.yield();
                         }
                         System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
@@ -93,9 +92,9 @@ class Arbitration extends Thread{
                 domainID = Integer.parseInt(String.valueOf(randColumn.charAt(1)));
                 //domainID = (randomColumnNum - m);
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Switched to " + randColumn);
-                int randomYieldTime = yieldTimesArray[Use.randNum(0,4)];
-                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                for(int i = 1; i <= randomYieldTime; i++){
+                int randYieldTime = Use.randNum(3,7);
+                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
+                for(int i = 1; i <= randYieldTime; i++){
                     Thread.yield();
                 }
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
