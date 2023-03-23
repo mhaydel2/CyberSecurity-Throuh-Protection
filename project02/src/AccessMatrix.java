@@ -19,17 +19,16 @@ class Arbitration extends Thread{
 
     }
 
-    public void arbitration(int threadID, int randomColumnNum, String randColumn, int domainID){
+    public void arbitration(int threadID, int randColumnNum, String randColumn, int domainID){
         String operation;
         int objID;
-        int[] yieldTimesArray = {3, 4, 5, 6, 7 };
         String[] charBufferArray = new String[1];
         charBufferArray[0] = " ";
         String[] randWordArray = {"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"};
 
 
         if(randColumn.charAt(0) == 'F'){ // determines whether selected column corresponds to a domain or file object
-        //if(randomColumnNum <= m){
+        //if(randColumnNum <= m){
             // randomly picks to read or write
             switch (Use.randNum(0,1)) {
                 case 0:
@@ -47,7 +46,7 @@ class Arbitration extends Thread{
                         } catch(Exception e){
                             System.out.println(e);
                         }
-                        int randYieldTime = yieldTimesArray[Use.randNum(0,4)]; // yields [3,7] times
+                        int randYieldTime = Use.randNum(3,7); // yields [3,7] times
                         System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
                         for(int i = 1; i <= randYieldTime; i++){
                             Thread.yield();
@@ -73,9 +72,9 @@ class Arbitration extends Thread{
                         }catch(Exception e){
                             System.out.println(e);
                         }
-                        int randomYieldTime = yieldTimesArray[Use.randNum(0,4)];
-                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                        for(int i = 1; i <= randomYieldTime; i++){
+                        int randYieldTime = Use.randNum(3,7);
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
+                        for(int i = 1; i <= randYieldTime; i++){
                             Thread.yield();
                         }
                         System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
@@ -88,14 +87,14 @@ class Arbitration extends Thread{
 
         } else {
             System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + randColumn);
-            //System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + (randomColumnNum - m) );
-            if(Matrix[domainID][randomColumnNum] == "allow"){
+            //System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + (randColumnNum - m) );
+            if(Matrix[domainID][randColumnNum] == "allow"){
                 domainID = Integer.parseInt(String.valueOf(randColumn.charAt(1)));
-                //domainID = (randomColumnNum - m);
+                //domainID = (randColumnNum - m);
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Switched to " + randColumn);
-                int randomYieldTime = yieldTimesArray[Use.randNum(0,4)];
-                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                for(int i = 1; i <= randomYieldTime; i++){
+                int randYieldTime = Use.randNum(3,7);
+                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
+                for(int i = 1; i <= randYieldTime; i++){
                     Thread.yield();
                 }
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
@@ -111,9 +110,9 @@ class Arbitration extends Thread{
         for(int i = 0; i < 5; i++) {
             Random rand = new Random();
             // Depending on what number you get will determine if it's an object or domain
-            int randomColumnNum = rand.nextInt(Matrix[0].length - 1) + 1;
-            String randomColumn = Matrix[0][randomColumnNum];
-            arbitration(threadID, randomColumnNum, randomColumn, domainID);
+            int randColumnNum = rand.nextInt(Matrix[0].length - 1) + 1;
+            String randColumn = Matrix[0][randColumnNum];
+            arbitration(threadID, randColumnNum, randColumn, domainID);
         }
     }
 }

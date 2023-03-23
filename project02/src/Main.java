@@ -21,7 +21,7 @@ public class Main {
             return;
         }
         else if (!args[0].equals("-S")) {
-            System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-A\" ONLY!)");
+            System.out.println("Invalid input! (incorrect first parameter; first parameter MUST be \"-S\" ONLY!)");
             System.out.println("The ONLY valid arguments are as follows:  -S 1");
             System.out.println("                                          -S 2");
             System.out.println("                                          -S 3");
