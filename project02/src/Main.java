@@ -38,6 +38,20 @@ public class Main {
         }
         if (args[1].equals("1")){
             System.out.println("----------------------------Access Matrix----------------------------");
+            int domains = Use.randNum(3, 7);
+            int objects = Use.randNum(3, 7);
+
+            System.out.println("Domain count: " + domains);
+            System.out.println("Object count: " + objects);
+            AccessMatrix accessMatrix = new AccessMatrix(domains, objects);
+            //accessMatrix.run();
+
+            for (int threadID = 0; threadID < domains; threadID++){
+                int domainID = threadID +1;
+                Arbitration threadObject = new Arbitration(domains, objects, threadID, accessMatrix.Matrix, domainID);
+                threadObject.start();
+            }
+
         }
         if (args[1].equals("2")){
             System.out.println("----------------------------Access List----------------------------");
