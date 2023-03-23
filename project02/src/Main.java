@@ -51,6 +51,7 @@ public class Main {
                 Arbitration threadObject = new Arbitration(domains, objects, threadID, accessMatrix.Matrix, domainID);
                 threadObject.start();
             }
+            // Code by Chris Walther, C00408978
 
         }
         if (args[1].equals("2")){
