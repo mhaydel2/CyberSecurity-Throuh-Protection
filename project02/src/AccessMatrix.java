@@ -50,9 +50,9 @@ class Arbitration extends Thread{
                         } catch(Exception e){
                             System.out.println(e);
                         }
-                        int randomYieldTime = yieldTimesArray[Use.randNum(0,4)]; // yields [3,7] times
-                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                        for(int i = 1; i <= randomYieldTime; i++){
+                        int randYieldTime = yieldTimesArray[Use.randNum(0,4)]; // yields [3,7] times
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randYieldTime + " times");
+                        for(int i = 1; i <= randYieldTime; i++){
                             Thread.yield();
                         }
                         System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
@@ -219,39 +219,39 @@ public class AccessMatrix{
             if(row == 0){
                 for(int columnNum = 0; columnNum < Matrix[0].length; columnNum++){
                     if(columnNum == 0){
-                        Matrix[0][0] = "D/O";
-                        System.out.printf("%-5s", Matrix[0][0] + " ");
+                        Matrix[0][0] = "Dom/Obj";
+                        System.out.printf("%-8s", Matrix[0][0] + " ");
                     } else if (columnNum <= m) {
                         // assigns column for number of objects
                         Matrix[0][columnNum] = "F" + columnNum;
-                        System.out.printf("%-7s", Matrix[0][columnNum]);
+                        System.out.printf("%-10s", Matrix[0][columnNum]);
                     } else {
                         // assigns column for number of domains
                         Matrix[0][columnNum] = "D" + (columnNum - m);
-                        System.out.printf("%-7s", Matrix[0][columnNum]);
+                        System.out.printf("%-10s", Matrix[0][columnNum]);
                     }
                 }
             } else {
                 Matrix[row][0] = "D" + row;
-                System.out.printf("%-5s","D" + row);
+                System.out.printf("%-8s","D" + row);
 
                 // Populates/loops the columns with access rights
                 for(int columFill = 1; columFill < Matrix[0].length; columFill++){
                     if(columFill <= m){
                         if(matrix [row-1][columFill-1] == null){
-                            Matrix[row][columFill] = "-";
-                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
+                            Matrix[row][columFill] = "--";
+                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
                         } else {
                             Matrix[row][columFill] = matrix[row - 1][columFill - 1];
-                            System.out.printf("%-7s", Matrix[row][columFill] + " ");
+                            System.out.printf("%-10s", Matrix[row][columFill] + " ");
                         }
                     } else {
                         if(matrix [row-1][columFill-1] == null){
                             Matrix[row][columFill] = "N/A";
-                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
+                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
                         } else{
                             Matrix[row][columFill] = matrix [row - 1][columFill - 1];
-                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
+                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
                         }
                     }
                 }

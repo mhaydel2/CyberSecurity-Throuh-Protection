@@ -44,7 +44,7 @@ public class Main {
             System.out.println("Domain count: " + domains);
             System.out.println("Object count: " + objects);
             AccessMatrix accessMatrix = new AccessMatrix(domains, objects);
-            accessMatrix.run();
+            //accessMatrix.run();
 
             for (int threadID = 0; threadID < domains; threadID++){
                 int domainID = threadID +1;
