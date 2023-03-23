@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
+// Code in this section by Chris Walther, C00408978
 class Arbitration extends Thread{
     int n, m; // n = domains and m = objects
     private int threadID, domainID;
@@ -109,7 +110,6 @@ class Arbitration extends Thread{
     public void run(){
         for(int i = 0; i < 5; i++) {
             Random rand = new Random();
-            // Depending on what number you get will determine if it's an object or domain
             int randColumnNum = rand.nextInt(Matrix[0].length - 1) + 1;
             String randColumn = Matrix[0][randColumnNum];
             arbitration(threadID, randColumnNum, randColumn, domainID);
@@ -133,7 +133,7 @@ public class AccessMatrix{
         n = domains;
         m = objects;
         matrix = new String[n][m + n]; // create access matrix
-        Matrix = new String[n + 1][(n+m) + 1]; // create access matrix with labels
+        Matrix = new String[n + 1][(n + m) + 1]; // create access matrix with labels
          /*
         locks = new Semaphore[m]; // create file object locks
         for (int i = 0; i < m; i++) {
@@ -218,23 +218,23 @@ public class AccessMatrix{
                         Matrix[0][0] = "Dom/Obj";
                         System.out.printf("%-8s", Matrix[0][0] + " ");
                     } else if (columnNum <= m) {
-                        // assigns column for number of objects
+                        // assigns column number and name for file objects in first row
                         Matrix[0][columnNum] = "F" + columnNum;
                         System.out.printf("%-10s", Matrix[0][columnNum]);
                     } else {
-                        // assigns column for number of domains
+                        // assigns column number and name for domains in first row
                         Matrix[0][columnNum] = "D" + (columnNum - m);
                         System.out.printf("%-10s", Matrix[0][columnNum]);
                     }
                 }
             } else {
                 Matrix[row][0] = "D" + row;
-                System.out.printf("%-8s","D" + row);
+                System.out.printf("%-8s", "D" + row);
 
-                // populates columns with access rights
+                // populates columns of Matrix with access rights from original matrix generated
                 for(int fill = 1; fill < Matrix[0].length; fill++){
                     if(fill <= m){
-                        if(matrix [row-1][fill-1] == null){
+                        if(matrix [row - 1][fill - 1] == null){
                             Matrix[row][fill] = "--";
                             System.out.printf("%-10s", Matrix[row][fill] + "  ");
                         } else {
@@ -242,7 +242,7 @@ public class AccessMatrix{
                             System.out.printf("%-10s", Matrix[row][fill] + " ");
                         }
                     } else {
-                        if(matrix [row-1][fill-1] == null){
+                        if(matrix [row - 1][fill - 1] == null){
                             Matrix[row][fill] = "N/A";
                             System.out.printf("%-10s", Matrix[row][fill] + "  ");
                         } else{
@@ -251,7 +251,8 @@ public class AccessMatrix{
                         }
                     }
                 }
-
+                /* by end of this section, "Matrix" is populated with data from "matrix" with extra column
+                and row to accommodate for labeling for purpose of printing and arbitration made easier  */
 
 
             }
@@ -271,5 +272,5 @@ public class AccessMatrix{
          */
     }
 
-
+    // Code in this section by Chris Walther, C00408978
 }
