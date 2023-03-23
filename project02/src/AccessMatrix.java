@@ -28,10 +28,7 @@ class Arbitration extends Thread{
         String[] randWordArray = {"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"};
 
 
-
-
-        //Checks to see if it's a domain or object by looking at the first character of the string
-        if(randColumn.charAt(0) == 'F'){
+        if(randColumn.charAt(0) == 'F'){ // determines whether selected column corresponds to a domain or file object
         //if(randomColumnNum <= m){
             // randomly picks to read or write
             switch (Use.randNum(0,1)) {
