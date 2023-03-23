@@ -48,7 +48,7 @@ public class Main {
 
             for (int threadID = 0; threadID < domains; threadID++){
                 int domainID = threadID +1;
-                Arbitration threadObject = new Arbitration(threadID, accessMatrix.matrix, domainID);
+                Arbitration threadObject = new Arbitration(domains, objects, threadID, accessMatrix.Matrix, domainID);
                 threadObject.start();
             }
 

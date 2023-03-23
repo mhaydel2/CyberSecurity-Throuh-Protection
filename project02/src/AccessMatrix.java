@@ -1,28 +1,28 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class Arbitration extends Thread{
-    private int threadID;
+    int n, m; //n = domains and m = objects
+    private int threadID, domainID;
     private String[][] Matrix;
-    private int domainID;
 
     ReentrantLock semLock = new ReentrantLock();
 
 
-    public Arbitration(int threadID, String[][] Matrix, int domainID){
+    public Arbitration(int n, int m, int threadID, String[][] Matrix, int domainID){
+        this.n = n;
+        this.m = m;
         this.threadID = threadID;
         this.Matrix = Matrix;
         this.domainID = domainID;
 
     }
 
-    public void arbFunction(int threadID, int randomColumnNum, String randomColumn, int domainID){
-        String[] attemptArray = {"read", "write"};
+    public void arbitration(int threadID, int randomColumnNum, String randomColumn, int domainID){
+        String operation;
+        int objID;
+        //String[] attemptArray = {"read", "write"};
         int[] yieldTimesArray = {3, 4, 5, 6, 7 };
         String[] characterBufferArray = new String[1];
         characterBufferArray[0] = " ";
@@ -33,13 +33,76 @@ class Arbitration extends Thread{
 
         //Checks to see if it's a domain or object by looking at the first character of the string
         if(randomColumn.charAt(0) == 'F'){
-            //Randomly picks to read or write
+        //if(randomColumnNum <= m){
+            // randomly picks to read or write
+            switch (Use.randNum(0,1)) {
+                case 0:
+                    operation = "read";
+                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randomColumn);
+
+                    objID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                    if(Matrix[domainID][objID] == "R" || Matrix[domainID][objID] == "R/W"){
+                        try{
+                            semLock.lock();
+                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Resource " + randomColumn + " contains: " + Arrays.toString(characterBufferArray));
+                            semLock.unlock();
+                        }catch(Exception e){
+                            System.out.println(e);
+                        }
+                        //Yields for a random number of times [3-7]
+                        Random rand = new Random();
+                        int randomYieldNum = rand.nextInt(4);
+                        int randomYieldTime = yieldTimesArray[randomYieldNum];
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
+                        for(int i = 1; i <= randomYieldTime; i++){
+                            Thread.yield();
+                        }
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
+                    }else{
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation failed, permission denied");
+                    }
+                case 1:
+                    operation = "write";
+                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randomColumn);
+
+                    objID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                    //Checks to see if that domain has write permissions on that object
+                    if(Matrix[domainID][objID] == "W" || Matrix[domainID][objID] == "R/W"){
+                        //WRITES
+                        try{
+                            semLock.lock();
+                            //Pick a random word to write to the buffer array
+                            Random randomWordWrite = new Random();
+                            int randomWordNum = randomWordWrite.nextInt(10);
+                            String randomWord = randomWordArray[randomWordNum];
+                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Writing '" + randomWord + "' to " + randomColumn);
+                            characterBufferArray[0] = randomWord;
+                            semLock.unlock();
+                        }catch(Exception e){
+                            System.out.println(e);
+                        }
+                        Random randW = new Random();
+                        int randomYieldNum = randW.nextInt(4);
+                        int randomYieldTime = yieldTimesArray[randomYieldNum];
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
+                        for(int i = 1; i <= randomYieldTime; i++){
+                            Thread.yield();
+                        }
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
+                    }else{
+                        System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation failed, permission denied");
+                    }
+
+
+            }
+             /*
             Random random = new Random();
             int randomAttemptNum = random.nextInt(2);
             String randomAttempt = attemptArray[randomAttemptNum];
 
             System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + randomAttempt + " resource: " + randomColumn);
-
+            */
+            /*
             if(randomAttempt == "read"){
                 int objectID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
                 if(Matrix[domainID][objectID] == "R" || Matrix[domainID][objectID] == "R/W"){
@@ -95,27 +158,30 @@ class Arbitration extends Thread{
                 }else{
                     System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation failed, permission denied");
                 }
-            }
+            } */
 
 
 
 
-        }else{
+        } else {
             System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + randomColumn);
+            //System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + (randomColumnNum - m) );
             if(Matrix[domainID][randomColumnNum] == "allow"){
                 domainID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                //domainID = (randomColumnNum - m);
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Switched to " + randomColumn);
                 Random random = new Random();
                 int randomYieldNum = random.nextInt(4);
                 int randomYieldTime = yieldTimesArray[randomYieldNum];
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
-                for(int i = 1; i<=randomYieldTime; i++){
+                for(int i = 1; i <= randomYieldTime; i++){
                     Thread.yield();
                 }
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation Complete");
-            }else{
+            } else {
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Operation failed, permission denied");
             }
+
         }
     }
 
@@ -131,7 +197,7 @@ class Arbitration extends Thread{
             // Depending on what number you get will determine if it's an object or domain
             int randomColumnNum = rand.nextInt(Matrix[0].length - 1) + 1;
             String randomColumn = Matrix[0][randomColumnNum];
-            arbFunction(threadID, randomColumnNum, randomColumn, domainID);
+            arbitration(threadID, randomColumnNum, randomColumn, domainID);
         }
     }
 }
@@ -144,6 +210,7 @@ public class AccessMatrix extends Thread{
     final String [][] matrix; // access matrix
     //private final Semaphore[] locks; // file object locks
     //ReentrantLock semLock = new ReentrantLock();
+    final String[][] Matrix;
 
     public AccessMatrix(int domains, int objects) {
         // assign random values to n and m
@@ -155,6 +222,7 @@ public class AccessMatrix extends Thread{
         n = domains;
         m = objects;
         matrix = new String[n][m + n]; // create access matrix
+        Matrix = new String[n + 1][(n+m) + 1]; // create access matrix with labels
          /*
         locks = new Semaphore[m]; // create file object locks
         for (int i = 0; i < m; i++) {
@@ -355,61 +423,61 @@ public class AccessMatrix extends Thread{
 
 
     private void printAccessMatrix() {
-        String[][] accessMatrix = new String[n + 1][(n+m) + 1];
+        //String[][] accessMatrix = new String[n + 1][(n+m) + 1];
 
-        for(int row = 0; row < accessMatrix.length; row++){
-            //Populates the first row with column names
+        for(int row = 0; row < Matrix.length; row++){
+            // populates first row with column names
             if(row == 0){
-                for(int colNum = 0; colNum < accessMatrix[0].length; colNum++){
-                    if(colNum == 0){
-                        accessMatrix[0][0] = "D/O";
-                        System.out.printf("%-5s", accessMatrix[0][0] + " ");
-                    } else if (colNum <= m) {
-                        //Assigns the column for the number of objects
-                        accessMatrix[0][colNum] = "F" + colNum;
-                        System.out.printf("%-7s", accessMatrix[0][colNum]);
+                for(int columnNum = 0; columnNum < Matrix[0].length; columnNum++){
+                    if(columnNum == 0){
+                        Matrix[0][0] = "D/O";
+                        System.out.printf("%-5s", Matrix[0][0] + " ");
+                    } else if (columnNum <= m) {
+                        // assigns column for number of objects
+                        Matrix[0][columnNum] = "F" + columnNum;
+                        System.out.printf("%-7s", Matrix[0][columnNum]);
                     } else {
-                        //Assigns the column for the number of domains
-                        accessMatrix[0][colNum] = "D" + (colNum - n);
-                        System.out.printf("%-7s", accessMatrix[0][colNum]);
+                        // assigns column for number of domains
+                        Matrix[0][columnNum] = "D" + (columnNum - m);
+                        System.out.printf("%-7s", Matrix[0][columnNum]);
                     }
                 }
             } else {
-                accessMatrix[row][0] = "D" + row;
+                Matrix[row][0] = "D" + row;
                 System.out.printf("%-5s","D" + row);
 
                 // Populates/loops the columns with access rights
-                for(int colFill = 1; colFill < accessMatrix[0].length; colFill++){
-                    if(colFill <= m){
-                        if(matrix [row-1][colFill-1] == null){
-                            accessMatrix[row][colFill] = " - ";
-                            System.out.printf("%-7s", accessMatrix[row][colFill] + "  ");
+                for(int columFill = 1; columFill < Matrix[0].length; columFill++){
+                    if(columFill <= m){
+                        if(matrix [row-1][columFill-1] == null){
+                            Matrix[row][columFill] = "-";
+                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
                         } else {
                             //1 - 3 Fills the objects access rights
                             //int objRan = rand.nextInt(4);
                             //String randomOperation = objectArray[objRan];
-                            //matrix[row][colFill] = randomOperation;
-                            accessMatrix[row][colFill] = matrix[row - 1][colFill - 1];
-                            System.out.printf("%-7s", accessMatrix[row][colFill] + " ");
+                            //matrix[row][columFill] = randomOperation;
+                            Matrix[row][columFill] = matrix[row - 1][columFill - 1];
+                            System.out.printf("%-7s", Matrix[row][columFill] + " ");
                         }
                     } else {
-                        if(matrix [row-1][colFill-1] == null){
-                            accessMatrix[row][colFill] = " N/A ";
-                            System.out.printf("%-7s", accessMatrix[row][colFill] + "  ");
+                        if(matrix [row-1][columFill-1] == null){
+                            Matrix[row][columFill] = "N/A";
+                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
                         }
                         /*
                         //Checks if the domain is the same or not, if so fill it with -
-                        if(matrix[row][0].equals(matrix[0][colFill])){
-                            //matrix[row][colFill] = " - ";
-                            accessMatrix[row][colFill] = " - ";
-                            System.out.printf("%-7s", accessMatrix[row][colFill] + "  ");
+                        if(matrix[row][0].equals(matrix[0][columFill])){
+                            //matrix[row][columFill] = " - ";
+                            accessMatrix[row][columFill] = " - ";
+                            System.out.printf("%-7s", accessMatrix[row][columFill] + "  ");
                         }*/
                         else{
                             //int domainRandom = rand.nextInt(2);
                             //String randomRight = domainArray[domainRandom];
-                            //matrix[row][colFill] = randomRight;
-                            accessMatrix[row][colFill] = matrix [row-1][colFill-1];
-                            System.out.printf("%-7s", accessMatrix[row][colFill] + "  ");
+                            //matrix[row][columFill] = randomRight;
+                            Matrix[row][columFill] = matrix [row-1][columFill-1];
+                            System.out.printf("%-7s", Matrix[row][columFill] + "  ");
                         }
                     }
                 }
