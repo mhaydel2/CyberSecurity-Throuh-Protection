@@ -19,32 +19,32 @@ class Arbitration extends Thread{
 
     }
 
-    public void arbitration(int threadID, int randomColumnNum, String randomColumn, int domainID){
+    public void arbitration(int threadID, int randomColumnNum, String randColumn, int domainID){
         String operation;
         int objID;
         int[] yieldTimesArray = {3, 4, 5, 6, 7 };
-        String[] characterBufferArray = new String[1];
-        characterBufferArray[0] = " ";
+        String[] charBufferArray = new String[1];
+        charBufferArray[0] = " ";
         String[] randWordArray = {"Red", "Orange", "Yellow", "Green", "Blue", "Indigo", "Violet"};
 
 
 
 
         //Checks to see if it's a domain or object by looking at the first character of the string
-        if(randomColumn.charAt(0) == 'F'){
+        if(randColumn.charAt(0) == 'F'){
         //if(randomColumnNum <= m){
             // randomly picks to read or write
             switch (Use.randNum(0,1)) {
                 case 0:
                     operation = "read";
-                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randomColumn);
+                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randColumn);
 
-                    objID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                    objID = Integer.parseInt(String.valueOf(randColumn.charAt(1)));
                     if(Matrix[domainID][objID] == "R" || Matrix[domainID][objID] == "R/W"){
                         try{
                             semLock.lock();
 
-                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Resource " + randomColumn + " contains: " + Arrays.toString(characterBufferArray));
+                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Resource " + randColumn + " contains: " + Arrays.toString(charBufferArray));
 
                             semLock.unlock();
                         } catch(Exception e){
@@ -61,16 +61,16 @@ class Arbitration extends Thread{
                     }
                 case 1:
                     operation = "write";
-                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randomColumn);
+                    System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to " + operation + " resource: " + randColumn);
 
-                    objID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                    objID = Integer.parseInt(String.valueOf(randColumn.charAt(1)));
                     if(Matrix[domainID][objID] == "W" || Matrix[domainID][objID] == "R/W"){ // check for write permissions
                         try{
                             semLock.lock();
 
-                            String randomWord = randWordArray[Use.randNum(0,6)];
-                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Writing '" + randomWord + "' to " + randomColumn);
-                            characterBufferArray[0] = randomWord;
+                            String randWord = randWordArray[Use.randNum(0,6)];
+                            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Writing '" + randWord + "' to " + randColumn);
+                            charBufferArray[0] = randWord;
 
                             semLock.unlock();
                         }catch(Exception e){
@@ -90,12 +90,12 @@ class Arbitration extends Thread{
 
 
         } else {
-            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + randomColumn);
+            System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + randColumn);
             //System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Attempting to switch from D" + domainID + " to " + (randomColumnNum - m) );
             if(Matrix[domainID][randomColumnNum] == "allow"){
-                domainID = Integer.parseInt(String.valueOf(randomColumn.charAt(1)));
+                domainID = Integer.parseInt(String.valueOf(randColumn.charAt(1)));
                 //domainID = (randomColumnNum - m);
-                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Switched to " + randomColumn);
+                System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Switched to " + randColumn);
                 int randomYieldTime = yieldTimesArray[Use.randNum(0,4)];
                 System.out.println("[Thread " + threadID + ": (D" + domainID + ")] Yielding " + randomYieldTime + " times");
                 for(int i = 1; i <= randomYieldTime; i++){
@@ -123,7 +123,7 @@ class Arbitration extends Thread{
 
 
 
-public class AccessMatrix extends Thread{
+public class AccessMatrix{
     private final int n; // number of domains
     private final int m; // number of file objects
     //private final int[][] matrix; // access matrix
@@ -250,7 +250,7 @@ public class AccessMatrix extends Thread{
                             Matrix[row][columFill] = "N/A";
                             System.out.printf("%-7s", Matrix[row][columFill] + "  ");
                         } else{
-                            Matrix[row][columFill] = matrix [row-1][columFill-1];
+                            Matrix[row][columFill] = matrix [row - 1][columFill - 1];
                             System.out.printf("%-7s", Matrix[row][columFill] + "  ");
                         }
                     }
