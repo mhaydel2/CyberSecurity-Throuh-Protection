@@ -231,7 +231,7 @@ public class AccessMatrix{
                 Matrix[row][0] = "D" + row;
                 System.out.printf("%-8s", "D" + row);
 
-                // populates columns with access rights
+                // populates columns of Matrix with access rights from original matrix generated
                 for(int fill = 1; fill < Matrix[0].length; fill++){
                     if(fill <= m){
                         if(matrix [row - 1][fill - 1] == null){
@@ -251,7 +251,8 @@ public class AccessMatrix{
                         }
                     }
                 }
-
+                /* by end of this section, "Matrix" is populated with data from "matrix" with extra column
+                and row to accommodate for labeling for purpose of printing and arbitration made easier  */
 
 
             }
@@ -271,5 +272,5 @@ public class AccessMatrix{
          */
     }
 
-    // Code by Chris Walther, C00408978
+    // Code in this section by Chris Walther, C00408978
 }
