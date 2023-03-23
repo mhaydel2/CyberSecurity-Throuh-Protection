@@ -235,23 +235,23 @@ public class AccessMatrix{
                 Matrix[row][0] = "D" + row;
                 System.out.printf("%-8s","D" + row);
 
-                // Populates/loops the columns with access rights
-                for(int columFill = 1; columFill < Matrix[0].length; columFill++){
-                    if(columFill <= m){
-                        if(matrix [row-1][columFill-1] == null){
-                            Matrix[row][columFill] = "--";
-                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
+                // populates columns with access rights
+                for(int fill = 1; fill < Matrix[0].length; fill++){
+                    if(fill <= m){
+                        if(matrix [row-1][fill-1] == null){
+                            Matrix[row][fill] = "--";
+                            System.out.printf("%-10s", Matrix[row][fill] + "  ");
                         } else {
-                            Matrix[row][columFill] = matrix[row - 1][columFill - 1];
-                            System.out.printf("%-10s", Matrix[row][columFill] + " ");
+                            Matrix[row][fill] = matrix[row - 1][fill - 1];
+                            System.out.printf("%-10s", Matrix[row][fill] + " ");
                         }
                     } else {
-                        if(matrix [row-1][columFill-1] == null){
-                            Matrix[row][columFill] = "N/A";
-                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
+                        if(matrix [row-1][fill-1] == null){
+                            Matrix[row][fill] = "N/A";
+                            System.out.printf("%-10s", Matrix[row][fill] + "  ");
                         } else{
-                            Matrix[row][columFill] = matrix [row - 1][columFill - 1];
-                            System.out.printf("%-10s", Matrix[row][columFill] + "  ");
+                            Matrix[row][fill] = matrix [row - 1][fill - 1];
+                            System.out.printf("%-10s", Matrix[row][fill] + "  ");
                         }
                     }
                 }
